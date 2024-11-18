@@ -1,0 +1,105 @@
+CREATE TABLE  [Member]
+(	mId          CHAR(8)        NOT NULL ,
+	name       VARCHAR(8)       NOT NULL ,
+	phone      VARCHAR(10)      NOT NULL ,
+	email       VARCHAR(20) ,
+	password       VARCHAR(20) ,
+	birthday   DATETIME ,
+
+	PRIMARY  KEY (mId)
+);
+
+CREATE TABLE [Store] 
+(	sId CHAR(8) NOT NULL , 
+	sName VARCHAR(8) NOT NULL , 
+	sTime Time NOT NULL ,
+	mId   CHAR(8), 
+
+	PRIMARY KEY (sId), 
+	FOREIGN KEY(mId)REFERENCES Member(mId) 
+);
+
+CREATE TABLE [Product]
+(	pId         CHAR(6)       NOT NULL,
+	pName       VARCHAR(30),
+	unitPrice   DECIMAL(10, 2),
+	category    VARCHAR(20),
+	image      image, 
+
+	PRIMARY KEY (pId)
+);
+
+CREATE TABLE [Transaction]
+(
+	tNo CHAR(5) NOT NULL,
+	mId CHAR(8) NOT NULL,
+	tTime DATETIME NOT NULL,
+	method VARCHAR(5) NOT NULL,
+	address VARCHAR(40),
+	payment VARCHAR(20),
+
+	PRIMARY KEY (tNo) ,
+	FOREIGN KEY (mId) REFERENCES Member(mId)
+
+);
+
+
+CREATE TABLE [Cart]​
+(	mId      CHAR(8)       NOT NULL ,​
+	cTime     DATETIME     NOT NULL ​
+	PRIMARY KEY (mId, cTime),​
+	FOREIGN KEY (mId) ​ REFERENCES Member(mId)​
+	   ON DELETE CASCADE  ON UPDATE  CASCADE​
+);
+
+
+CREATE TABLE Sales
+(    pId            CHAR(6)        NOT NULL, ​
+    sId            CHAR(8)        NOT NULL ​
+
+    PRIMARY KEY (pId, sId), ​
+     FOREIGN KEY (pId) REFERENCES Product(pId),
+     FOREIGN KEY (sId) ​REFERENCES Store(sId) ​
+); ​
+
+
+CREATE TABLE  [Evaluation] ​
+
+(	mId       CHAR(8)         NOT NULL, ​
+	eSeq    CHAR(10)        NOT NULL, ​
+	eStar    CHAR(1), ​
+	comment    VARCHAR(40) , ​
+	sId       CHAR(8)​
+
+	PRIMARY KEY (mId, eSeq), ​
+	FOREIGN KEY (mId) REFERENCES Member(mId) ​
+		ON UPDATE CASCADE, ​
+	FOREIGN KEY (sId) REFERENCES Store(sId) ​
+		ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE  [Order]​
+(​
+  mId  CHAR(8) NOT NULL ,​
+  cTime  DATETIME NOT NULL ,​
+  pId  CHAR(8) NOT NULL ,​
+  pSeq  CHAR(8) NOT NULL ,​
+	pStar CHAR(5)  ,​
+	pCommen VARCHAR(40)  ,​
+	PRIMARY KEY (mId, cTime ) ,​
+	FOREIGN KEY (mId, cTime)​ REFERENCES Cart (mId,cTime)​
+
+);
+
+
+CREATE TABLE [Browse]​
+(	 mId       CHAR(8)  NOT NULL  DEFAULT 'a0910001',​
+	pId       CHAR(6)           NOT NULL,​
+
+	PRIMARY KEY (mId, pId),​
+	FOREIGN KEY (mId) REFERENCES Member(mId)​
+		ON DELETE CASCADE ON UPDATE CASCADE,​
+	FOREIGN KEY (pId) REFERENCES Product(pId)
+);
+
+
